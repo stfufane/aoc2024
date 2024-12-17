@@ -18,12 +18,9 @@ class Day4 final : public DaySolver {
 
 
     private:
-        size_t row_count = 0;
-        size_t col_count = 0;
-        std::ranges::split_view<std::string_view, std::ranges::single_view<char>> rows;
+        utils::Grid grid;
 
         void parse();
-        [[nodiscard]] unsigned long getFlatIndex(long row, long col) const;
 
         enum class Direction
         {

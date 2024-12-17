@@ -21,14 +21,7 @@ MXMXAXMASX)";
 }
 
 void Day4::parse() {
-    rows = input_data | std::views::split('\n');
-    row_count = std::ranges::distance(rows);
-    col_count = rows.front().size();
-}
-
-// Calculate the index of the letter in the string_view. Adding next_coord.y to include the eol character of each line.
-unsigned long Day4::getFlatIndex(long row, long col) const {
-    return row * row_count + col + row;
+    grid = utils::Grid(input_data);
 }
 
 long Day4::solvePart1() {
@@ -38,17 +31,15 @@ long Day4::solvePart1() {
         return std::ranges::all_of(positions | std::views::enumerate, [&](const std::tuple<long, const utils::Vector2&>& position) {
             const auto& direction = std::get<1>(position);
             const auto next_coord = X_coords + direction;
-            if (next_coord.y < 0 || next_coord.y > static_cast<int>(row_count) || next_coord.x < 0 || next_coord.x > static_cast<int>(col_count)) {
+            if (next_coord.y < 0 || next_coord.y > static_cast<int>(grid.height) || next_coord.x < 0 || next_coord.x > static_cast<int>(grid.width)) {
                 return false;
             }
-            // Calculate the index of the letter in the string_view. Adding next_coord.y to include the eol character of each line.
-            const auto flat_index = next_coord.y * row_count + next_coord.x + next_coord.y;
-            return mas_letters[static_cast<size_t>(std::get<0>(position))] == input_data[flat_index];
+            return mas_letters[static_cast<size_t>(std::get<0>(position))] == grid.get(next_coord);
         });
     };
 
     long nb_xmas = 0;
-    for (auto [row, line]: rows | std::views::enumerate) {
+    for (auto [row, line]: grid.rows | std::views::enumerate) {
         for (auto [col, letter]: line | std::views::enumerate) {
             if (letter == 'X') {
                 for (const auto direction: utils::enum_range(Day4::Direction::N, Day4::Direction::NW)) {
@@ -73,29 +64,29 @@ long Day4::solvePart2() {
             word);
     };
 
-    auto check_x_mas = [&](long row, long col) -> bool {
-        const auto a_index = getFlatIndex(row, col);
+    auto check_x_mas = [&](size_t y, size_t x) -> bool {
+        const auto a_index = grid.getIndex(x, y);
         const auto first_branch = std::array<unsigned long, 3> {
-            getFlatIndex(row - 1, col - 1),
+            grid.getIndex(x - 1, y - 1),
             a_index,
-            getFlatIndex(row + 1, col + 1),
+            grid.getIndex(x + 1, y + 1),
         };
         const auto second_branch = std::array<unsigned long, 3> {
-            getFlatIndex(row - 1, col + 1),
+            grid.getIndex(x + 1, y - 1),
             a_index,
-            getFlatIndex(row + 1, col - 1),
+            grid.getIndex(x - 1, y + 1),
         };
         return (is_same(first_branch, SAM) || is_same(first_branch, MAS)) &&
                (is_same(second_branch, SAM) || is_same(second_branch, MAS));
     };
 
     long nb_x_mas = 0;
-    for (auto [row, line]: rows | std::views::enumerate) {
-        if (row == 0 || row == static_cast<long>(row_count)) { continue; }
+    for (auto [row, line]: grid.rows | std::views::enumerate) {
+        if (row == 0 || row == static_cast<long>(grid.height)) { continue; }
         for (auto [col, letter]: line | std::views::enumerate) {
-            if (col == 0 || col == static_cast<long>(col_count)) { continue; }
+            if (col == 0 || col == static_cast<long>(grid.width)) { continue; }
             if (letter == 'A') {
-                if (check_x_mas(row, col)) {
+                if (check_x_mas(static_cast<size_t>(row), static_cast<size_t>(col))) {
                     ++nb_x_mas;
                 }
             }
