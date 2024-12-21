@@ -89,7 +89,7 @@ struct Grid {
         assert(x < width && y < height);
         return y * (width + 1) + x; // +1 to include the eol character
     } 
-    [[nodiscard]] size_t getIndex(const Vector2& v) const { return getIndex(v.x, v.y); }
+    [[nodiscard]] size_t getIndex(const Vector2& v) const { return getIndex(static_cast<size_t>(v.x), static_cast<size_t>(v.y)); }
     [[nodiscard]] Vector2 getCoords(size_t index) const {
         const auto row = index / (width + 1);
         const auto col = index % (width + 1);
