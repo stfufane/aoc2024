@@ -21,7 +21,7 @@ MXMXAXMASX)";
 }
 
 void Day4::parse() {
-    grid = utils::Grid(input_data);
+    grid = utils::ImmutableGrid(input_data);
 }
 
 long Day4::solvePart1() {
@@ -34,7 +34,7 @@ long Day4::solvePart1() {
             if (next_coord.y < 0 || next_coord.y > static_cast<int>(grid.height) || next_coord.x < 0 || next_coord.x > static_cast<int>(grid.width)) {
                 return false;
             }
-            return mas_letters[static_cast<size_t>(std::get<0>(position))] == grid.get(next_coord);
+            return mas_letters[static_cast<size_t>(std::get<0>(position))] == grid[next_coord];
         });
     };
 

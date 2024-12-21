@@ -18,7 +18,7 @@ class Day4 final : public DaySolver {
 
 
     private:
-        utils::Grid grid;
+        utils::ImmutableGrid grid;
 
         void parse();
 
