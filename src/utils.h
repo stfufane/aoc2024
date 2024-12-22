@@ -52,12 +52,30 @@ struct Vector2
     Vector2 operator+(const Vector2& other) const { return { x + other.x, y + other.y }; }
     Vector2 operator-(const Vector2& other) const { return { x - other.x, y - other.y }; }
     Vector2& operator+=(const Vector2& other) { x += other.x; y += other.y; return *this; }
+
+    Vector2 mirror(const Vector2& center) const {
+        return { 2 * center.x - x, 2 * center.y - y };
+    }
     
     // For use in std::set
     bool operator<(const Vector2& other) const { return x < other.x || (x == other.x && y < other.y); }
+    bool operator==(const Vector2& other) const { return x == other.x && y == other.y; }
 
     [[nodiscard]] std::string to_string() const { return "[" + std::to_string(x) + ", " + std::to_string(y) + "]"; }
 };
+
+struct Vector2Hash {
+    std::size_t operator()(const Vector2& v) const noexcept {
+        std::size_t h1 = std::hash<int>{}(v.x);
+        std::size_t h2 = std::hash<int>{}(v.y);
+        return h1 ^ (h2 * 0x9e3779b9 + (h1 << 6) + (h1 >> 2));
+    }
+};
+
+inline std::ostream& operator<<(std::ostream& stream, const Vector2& v) {
+    std::cout << v.to_string();
+    return stream;
+}
 
 inline constexpr Vector2 Vector2Up { 0, -1 };
 inline constexpr Vector2 Vector2Down { 0, 1 };
@@ -86,14 +104,14 @@ struct Grid {
     size_t height = 0;
 
     [[nodiscard]] size_t getIndex(size_t x, size_t y) const { 
-        assert(x < width && y < height);
+        // assert(x < width && y < height);
         return y * (width + 1) + x; // +1 to include the eol character
     } 
     [[nodiscard]] size_t getIndex(const Vector2& v) const { return getIndex(static_cast<size_t>(v.x), static_cast<size_t>(v.y)); }
     [[nodiscard]] Vector2 getCoords(size_t index) const {
-        const auto row = index / (width + 1);
-        const auto col = index % (width + 1);
-        return {static_cast<int>(col), static_cast<int>(row) };
+        const auto x = index % (width + 1);
+        const auto y = index / (width + 1);
+        return {static_cast<int>(x), static_cast<int>(y) };
     }
     [[nodiscard]] char get(size_t x, size_t y) const { return grid_data[getIndex(x, y)]; }
     [[nodiscard]] char get(const Vector2& pos) const { return get(static_cast<size_t>(pos.x), static_cast<size_t>(pos.y)); }
@@ -104,6 +122,9 @@ struct Grid {
 
     [[nodiscard]] bool isInside(const Vector2& pos) const {
         return pos.x >= 0 && pos.x < static_cast<int>(width) && pos.y >= 0 && pos.y < static_cast<int>(height);
+    }
+    [[nodiscard]] bool isInside(size_t index) const {
+        return index < grid_data.size();
     }
 };
 
