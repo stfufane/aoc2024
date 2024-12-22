@@ -9,8 +9,8 @@ namespace adventofcode
         Day3();
         ~Day3() override = default;
 
-        long solvePart1() override;
-        long solvePart2() override;
+        ResultType solvePart1() override;
+        ResultType solvePart2() override;
 
     private:
         long getInstructions(std::string_view data_slice) const;

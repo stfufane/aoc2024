@@ -73,7 +73,7 @@ struct Vector2Hash {
 };
 
 inline std::ostream& operator<<(std::ostream& stream, const Vector2& v) {
-    std::cout << v.to_string();
+    stream << v.to_string();
     return stream;
 }
 

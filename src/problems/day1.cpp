@@ -36,7 +36,7 @@ std::pair<std::vector<int>, std::vector<int>> Day1::getLists(bool sorted) const 
     return lists;
 }
 
-long Day1::solvePart1() {
+ResultType Day1::solvePart1() {
     const auto [first_list, second_list] = getLists(true);
     long distance = 0;
     for (size_t i = 0; i < first_list.size(); ++i) {
@@ -45,7 +45,7 @@ long Day1::solvePart1() {
     return distance;
 }
 
-long Day1::solvePart2() {
+ResultType Day1::solvePart2() {
     const auto [first_list, second_list] = getLists(false);
     return std::transform_reduce(
         first_list.begin(), first_list.end(), 0L, std::plus(),

@@ -24,7 +24,7 @@ void Day4::parse() {
     grid = utils::ImmutableGrid(input_data);
 }
 
-long Day4::solvePart1() {
+ResultType Day4::solvePart1() {
     parse();
     auto check_xmas = [&](long row, long col, const std::array<utils::Vector2, 3>& positions) -> bool {
         utils::Vector2 X_coords = { static_cast<int>(col), static_cast<int>(row) };
@@ -55,7 +55,7 @@ long Day4::solvePart1() {
     return nb_xmas;
 }
 
-long Day4::solvePart2() {
+ResultType Day4::solvePart2() {
     parse();
 
     auto is_same = [&](const std::array<unsigned long, 3>& letter_indices, std::string_view word)-> bool {

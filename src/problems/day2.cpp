@@ -61,12 +61,12 @@ bool Day2::recheckUnsafeReport(const std::vector<int>& report) {
     return false;
 }
 
-long Day2::solvePart1() {
+ResultType Day2::solvePart1() {
     auto reports = getReports();
     return std::ranges::count_if(reports, [](const auto& report) { return isSafeReport(report); });
 }
 
-long Day2::solvePart2() {
+ResultType Day2::solvePart2() {
     long safe_reports = 0;
     auto reports = getReports();
     for (const auto& report : reports) {

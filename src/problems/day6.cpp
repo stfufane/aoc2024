@@ -68,7 +68,7 @@ Day6::GuardWalk Day6::guard_walk(const Step& starting_step) const {
     return { visited, !check_loop }; // if check_loop is true and we're here, it's not a loop.
 }
 
-long Day6::solvePart1() {
+ResultType Day6::solvePart1() {
     parse();
     auto guard_position = grid.grid_data.find_first_of(GUARD);
     const auto walk = guard_walk<false>(Step { guard_position, Direction::UP });
@@ -77,7 +77,7 @@ long Day6::solvePart1() {
     return static_cast<long>(unique_indexes.size());
 }
 
-long Day6::solvePart2() {
+ResultType Day6::solvePart2() {
     parse();
     auto guard_position = grid.grid_data.find_first_of(GUARD);
     size_t nb_obstacles = 0;

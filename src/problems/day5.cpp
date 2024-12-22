@@ -97,14 +97,14 @@ void Day5::sortUpdate(Update& update) {
     }
 }
 
-long Day5::solvePart1() {
+ResultType Day5::solvePart1() {
     parse();
     return std::transform_reduce(updates.begin(), updates.end(), 0, std::plus(), [&](const auto& update) {
         return checkUpdate(update);
     });
 }
 
-long Day5::solvePart2() { 
+ResultType Day5::solvePart2() { 
     parse();
     return std::transform_reduce(updates.begin(), updates.end(), 0, std::plus(), [&](auto& update) {
         if (checkUpdate(update) == 0) {

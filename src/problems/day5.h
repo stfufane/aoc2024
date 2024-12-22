@@ -13,8 +13,8 @@ public:
     Day5();
     ~Day5() override = default;
 
-    long solvePart1() override;
-    long solvePart2() override;
+    ResultType solvePart1() override;
+    ResultType solvePart2() override;
 
 private:
     using Update = std::vector<int>;

@@ -13,10 +13,9 @@ namespace adventofcode
         Day6();
         ~Day6() override = default;
 
-        long solvePart1() override;
-        long solvePart2() override;
-        
-
+        ResultType solvePart1() override;
+        ResultType solvePart2() override;
+    
     private:
         utils::MutableGrid grid;
         enum class Direction { UP, RIGHT, DOWN, LEFT };
@@ -67,7 +66,7 @@ namespace adventofcode
     };
 
     inline std::ostream& operator<<(std::ostream& stream, const Day6::Step& s) {
-        std::cout << "Step: " << s.index << " Direction: " << static_cast<int>(s.direction) << "\n";
+        stream << "Step: " << s.index << " Direction: " << static_cast<int>(s.direction) << "\n";
         return stream;
     }
 }

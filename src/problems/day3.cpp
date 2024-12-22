@@ -44,11 +44,11 @@ long Day3::getInstructions(std::string_view data_slice) const {
 }
 
 
-long Day3::solvePart1() {
+ResultType Day3::solvePart1() {
     return getInstructions(input_data);
 }
 
-long Day3::solvePart2() {
+ResultType Day3::solvePart2() {
     long total = 0;
     bool is_processing = true;
     size_t pos = 0;

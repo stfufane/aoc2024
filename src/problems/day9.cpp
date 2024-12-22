@@ -36,7 +36,7 @@ long Day9::compute_checksum() const {
     });
 }
 
-long Day9::solvePart1() {
+ResultType Day9::solvePart1() {
     parse();
     for (auto block = memory.begin(); block != memory.end(); ++block) {
         if (block->type == MemType::Used) {
@@ -52,7 +52,7 @@ long Day9::solvePart1() {
     return compute_checksum();
 }
 
-long Day9::solvePart2() {
+ResultType Day9::solvePart2() {
     parse();
     for (auto block = memory.rbegin(); block != memory.rend(); ++block) {
         if (block->type == MemType::Free) {

@@ -11,8 +11,8 @@ public:
     Day2();
     ~Day2() override = default;
 
-    long solvePart1() override;
-    long solvePart2() override;
+    ResultType solvePart1() override;
+    ResultType solvePart2() override;
 
 private:
     [[nodiscard]] std::vector<std::vector<int>> getReports() const;

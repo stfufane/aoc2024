@@ -1,6 +1,5 @@
 #include "day8.h"
 
-#include <algorithm>
 #include <cassert>
 #include <ranges>
 #include <unordered_set>
@@ -46,7 +45,7 @@ void Day8::get_mirrors(std::vector<utils::Vector2>& mirrors) const {
     }
 }
 
-long Day8::solvePart1() {
+ResultType Day8::solvePart1() {
     parse();
     std::unordered_set<size_t> antinodes;
     for (const auto& [antenna, coords]: antennas) {
@@ -62,7 +61,7 @@ long Day8::solvePart1() {
     return static_cast<long>(antinodes.size());
 }
 
-long Day8::solvePart2() {
+ResultType Day8::solvePart2() {
     parse();
     std::unordered_set<utils::Vector2, utils::Vector2Hash> antinodes;
 
