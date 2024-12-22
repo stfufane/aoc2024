@@ -10,8 +10,7 @@ namespace adventofcode
 {
 Day7::Day7() : DaySolver(7) {
     // Data for tests
-    test_data = R"(
-190: 10 19
+    test_data = R"(190: 10 19
 3267: 81 40 27
 83: 17 5
 156: 15 6

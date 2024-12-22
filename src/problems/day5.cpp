@@ -37,7 +37,6 @@ Day5::Day5() : DaySolver(5) {
 61,13,29
 97,13,75,29,47)";
     test_results = { 143, 123 };
-    parse();
 }
 
 void Day5::parse() {
@@ -99,12 +98,14 @@ void Day5::sortUpdate(Update& update) {
 }
 
 long Day5::solvePart1() {
+    parse();
     return std::transform_reduce(updates.begin(), updates.end(), 0, std::plus(), [&](const auto& update) {
         return checkUpdate(update);
     });
 }
 
 long Day5::solvePart2() { 
+    parse();
     return std::transform_reduce(updates.begin(), updates.end(), 0, std::plus(), [&](auto& update) {
         if (checkUpdate(update) == 0) {
             sortUpdate(update);
