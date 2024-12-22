@@ -26,9 +26,9 @@ concept Range = requires(T t) {
 };
 
 template <Range R>
-void print_range(const R& r) {
-    std::ranges::for_each(r, [](const auto& v) {
-        std::cout << v << ", ";
+void print_range(const R& r, const std::string_view sep = ", ") {
+    std::ranges::for_each(r, [&](const auto& v) {
+        std::cout << v << sep;
     });
     std::cout << '\n';
 }
