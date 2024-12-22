@@ -67,20 +67,20 @@ void Day5::parse() {
         std::string_view update_str(update_line.begin(), update_line.end());
         auto& update = updates.emplace_back();
         for (const auto& page : update_str | std::views::split(',')) {
-            std::from_chars(page.data(), page.data() + page.size(), update.pages.emplace_back());
+            std::from_chars(page.data(), page.data() + page.size(), update.emplace_back());
         }
     });
 }
 
 int Day5::checkUpdate(const Update& update) {
-    if (std::ranges::all_of(update.pages | std::views::reverse | std::ranges::views::enumerate, [&](const std::tuple<long, const int&> page) {
+    if (std::ranges::all_of(update | std::views::reverse | std::ranges::views::enumerate, [&](const std::tuple<long, const int&> page) {
         const auto& [idx, page_nb] = page;
-        return std::ranges::none_of(update.pages | std::views::reverse | std::views::drop(idx), [&](const int& remaining_page) {
+        return std::ranges::none_of(update | std::views::reverse | std::views::drop(idx), [&](const int& remaining_page) {
             return std::ranges::find(mustBeBefore[page_nb], remaining_page) != mustBeBefore[page_nb].end();
         });
     })) {
-        const auto middle_idx = update.pages.size() / 2;
-        return update.pages[middle_idx];
+        const auto middle_idx = update.size() / 2;
+        return update[middle_idx];
     }
     return 0;
 }
@@ -89,9 +89,9 @@ void Day5::sortUpdate(Update& update) {
     bool swapped = true;
     while (swapped) {
         swapped = false;
-        for (size_t i = 0; i < update.pages.size() - 1; ++i) {
-            if (std::ranges::find(mustBeBefore[update.pages[i + 1]], update.pages[i]) != mustBeBefore[update.pages[i + 1]].end()) {
-                std::swap(update.pages[i], update.pages[i + 1]);
+        for (size_t i = 0; i < update.size() - 1; ++i) {
+            if (std::ranges::find(mustBeBefore[update[i + 1]], update[i]) != mustBeBefore[update[i + 1]].end()) {
+                std::swap(update[i], update[i + 1]);
                 swapped = true;
             }
         }
@@ -108,8 +108,8 @@ long Day5::solvePart2() {
     return std::transform_reduce(updates.begin(), updates.end(), 0, std::plus(), [&](auto& update) {
         if (checkUpdate(update) == 0) {
             sortUpdate(update);
-            const auto middle_idx = update.pages.size() / 2;
-            return update.pages[middle_idx];
+            const auto middle_idx = update.size() / 2;
+            return update[middle_idx];
         }
         return 0;
     });

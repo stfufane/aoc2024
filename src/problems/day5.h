@@ -16,12 +16,10 @@ public:
     long solvePart1() override;
     long solvePart2() override;
 
-    struct Update
-    {
-        std::vector<int> pages;
-    };
-
 private:
+    using Update = std::vector<int>;
+    friend std::ostream& operator<<(std::ostream& stream, const Day5::Update& u);
+
     void parse();
 
     int checkUpdate(const Update& update);
@@ -32,7 +30,7 @@ private:
 };
 
 inline std::ostream& operator<<(std::ostream& stream, const Day5::Update& u) {
-    utils::print_range(u.pages);
+    utils::print_range(u);
     return stream;
 }
 
