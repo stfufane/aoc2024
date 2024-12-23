@@ -4,7 +4,6 @@
 
 #include "../utils.h"
 #include <unordered_set>
-#include <utility>
 
 namespace adventofcode
 {
@@ -18,17 +17,14 @@ namespace adventofcode
     
     private:
         utils::MutableGrid grid;
-        enum class Direction { UP, RIGHT, DOWN, LEFT };
-
-        static const std::map<Direction, utils::Vector2> DirectionToVector;
 
         // To check if we're in a loop
         struct Step {
             Step() = default;
-            Step(size_t i, Direction dir) : index(i), direction(dir) {}
+            Step(size_t i, utils::Direction dir) : index(i), direction(dir) {}
             
             size_t index = 0;
-            Direction direction = Direction::UP;
+            utils::Direction direction = utils::Direction::UP;
 
             bool operator==(const Step& other) const {
                 return index == other.index && direction == other.direction;
@@ -55,10 +51,6 @@ namespace adventofcode
         std::optional<Step> move(const Step& step) const;
 
         void parse();
-        
-        inline Direction getNext(Direction current) const {
-            return static_cast<Direction>((std::to_underlying(current) + 1) % 4);
-        }
 
         static constexpr char OBSTACLE = '#';
         static constexpr char GROUND   = '.';

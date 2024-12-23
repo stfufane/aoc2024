@@ -5,13 +5,6 @@
 namespace adventofcode
 {
 
-const std::map<Day6::Direction, utils::Vector2> Day6::DirectionToVector {
-    { Direction::UP, utils::Vector2Up },
-    { Direction::DOWN, utils::Vector2Down },
-    { Direction::LEFT, utils::Vector2Left},
-    { Direction::RIGHT, utils::Vector2Right }
-};
-
 Day6::Day6() : DaySolver(6) {
     // Data for tests
     test_data = R"(....#.....
@@ -35,14 +28,14 @@ void Day6::parse() {
 
 std::optional<Day6::Step> Day6::move(const Step& step) const {
     auto step_coord = grid.getCoords(step.index);
-    auto next_coord = step_coord + DirectionToVector.at(step.direction);
+    auto next_coord = step_coord + utils::DirectionToVector.at(step.direction);
     if (!grid.isInside(next_coord)) {
         return std::nullopt;
     }
     auto next_step = step;
     while (grid[next_coord] == OBSTACLE) {
-        next_step.direction = getNext(next_step.direction);
-        next_coord = step_coord + DirectionToVector.at(next_step.direction);
+        next_step.direction = utils::getNext(next_step.direction);
+        next_coord = step_coord + utils::DirectionToVector.at(next_step.direction);
     }
     next_step.index = grid.getIndex(next_coord);
     return next_step;
@@ -71,7 +64,7 @@ Day6::GuardWalk Day6::guard_walk(const Step& starting_step) const {
 ResultType Day6::solvePart1() {
     parse();
     auto guard_position = grid.grid_data.find_first_of(GUARD);
-    const auto walk = guard_walk<false>(Step { guard_position, Direction::UP });
+    const auto walk = guard_walk<false>(Step { guard_position, utils::Direction::UP });
     auto indexes = walk.steps | std::views::transform([](const Step& step) { return step.index; });
     std::unordered_set<size_t> unique_indexes(indexes.begin(), indexes.end());
     return static_cast<long>(unique_indexes.size());
@@ -82,7 +75,7 @@ ResultType Day6::solvePart2() {
     auto guard_position = grid.grid_data.find_first_of(GUARD);
     size_t nb_obstacles = 0;
 
-    const auto walk = guard_walk<false>(Step { guard_position, Direction::UP });
+    const auto walk = guard_walk<false>(Step { guard_position, utils::Direction::UP });
     auto indexes = walk.steps | std::views::transform([](const Step& step) { return step.index; });
     std::unordered_set<size_t> unique_indexes(indexes.begin(), indexes.end());
 
@@ -91,7 +84,7 @@ ResultType Day6::solvePart2() {
             continue;
         }
         grid[idx] = OBSTACLE;
-        if (guard_walk<true>(Step { guard_position, Direction::UP }).is_loop) {
+        if (guard_walk<true>(Step { guard_position, utils::Direction::UP }).is_loop) {
             ++nb_obstacles;
         }
         grid[idx] = GROUND;

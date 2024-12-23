@@ -41,6 +41,11 @@ void print_map(const std::map<K, V>& inMap) {
     }
 }
 
+enum class Direction { UP, RIGHT, DOWN, LEFT };
+inline Direction getNext(Direction current) {
+    return static_cast<Direction>((std::to_underlying(current) + 1) % 4);
+}
+
 struct Vector2
 {
     int x = 0;
@@ -81,6 +86,14 @@ inline constexpr Vector2 Vector2Up { 0, -1 };
 inline constexpr Vector2 Vector2Down { 0, 1 };
 inline constexpr Vector2 Vector2Left { -1, 0 };
 inline constexpr Vector2 Vector2Right { 1, 0 };
+
+
+const std::map<Direction, Vector2> DirectionToVector {
+    { Direction::UP, Vector2Up },
+    { Direction::DOWN, Vector2Down },
+    { Direction::LEFT, Vector2Left},
+    { Direction::RIGHT, Vector2Right }
+};
 
 /**
  * A representation of a grid-like string

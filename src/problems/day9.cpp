@@ -14,7 +14,7 @@ Day9::Day9() : DaySolver(9) {
 
 void Day9::parse() {
     long id = 0;
-    memory.reserve(input_data.size());
+    memory.reserve(input_data.size() * 5);
     for (const auto& pair: input_data | std::views::chunk(2)) {
         int used_count = pair.front() - '0';
         std::ranges::fill_n(std::back_inserter(memory), used_count, MemoryBlock {MemType::Used, id, static_cast<size_t>(used_count) });
