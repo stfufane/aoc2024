@@ -2,9 +2,11 @@
 
 #include <algorithm>
 #include <cassert>
+#include <cmath>
 #include <cstddef>
 #include <iostream>
 #include <map>
+#include <memory>
 #include <ranges>
 #include <string_view>
 #include <utility>
@@ -17,6 +19,11 @@ constexpr inline auto enum_range = []<typename EnumType>(EnumType front, EnumTyp
     return std::views::iota(std::to_underlying(front), std::to_underlying(back) + 1) |
            std::views::transform([](auto e) { return EnumType(e); });
 };
+
+constexpr inline long count_digits(long number) {
+    if (number < 10) return 1;
+    return static_cast<long>(std::floor(std::log10(std::abs(number))) + 1);
+}
 
 // Define a concept to check if a type is a range
 template <typename T>
@@ -157,6 +164,38 @@ struct MutableGrid : Grid<std::string> {
     char& operator[](size_t x, size_t y) { return grid_data[getIndex(x, y)]; }
     
     using Grid<std::string>::operator[];
+};
+
+
+template<typename T>
+struct Tree {
+    Tree* root = nullptr;
+   
+    T data;
+    
+    std::unique_ptr<Tree> left_node;
+    std::unique_ptr<Tree> right_node;
+
+    explicit Tree(T in_data) : data(std::move(in_data)) {}
+    
+    template<typename... Args>
+    explicit Tree(Tree* in_root, Args&&... args) : root(in_root), data(std::forward<Args>(args)...) {}
+
+    inline size_t nb_leaves() const {
+        if (!left_node && !right_node) {
+            return 1;
+        }
+        size_t left_leaves = left_node ? left_node->nb_leaves() : 0;
+        size_t right_leaves = right_node ? right_node->nb_leaves() : 0;
+        return left_leaves + right_leaves;
+    }
+
+    Tree* get_root() {
+        if (!root) {
+            return this;
+        }
+        return root->get_root();
+    }
 };
 
 
