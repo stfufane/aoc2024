@@ -29,5 +29,8 @@ namespace adventofcode
         template<bool concat>
         bool evaluate(const Equation& equation);
 
+        template<bool concat>
+        long get_result();
+
     };
 }

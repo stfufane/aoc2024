@@ -69,18 +69,20 @@ bool Day7::evaluate(const Equation& equation) {
     return result.has_value();
 }
 
-ResultType Day7::solvePart1() {
+template<bool concat>
+long Day7::get_result() {
     const auto equations = parse();
     return std::transform_reduce(equations.begin(), equations.end(), 0L, std::plus(), [&](const Equation& e) {
-        return evaluate<false>(e) ? e.expected_result : 0;
+        return evaluate<concat>(e) ? e.expected_result : 0;
     });
 }
 
+ResultType Day7::solvePart1() {
+    return get_result<false>();
+}
+
 ResultType Day7::solvePart2() {
-    const auto equations = parse();
-    return std::transform_reduce(equations.begin(), equations.end(), 0L, std::plus(), [&](const Equation& e) {
-        return evaluate<true>(e) ? e.expected_result : 0;
-    });
+    return get_result<true>();
 }
 
 }
